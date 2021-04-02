@@ -9,9 +9,8 @@ Data.addAnItem = async(req,res,next) => {
     const data = req.body;
     const item = new DataModel(data);
     res.status(200).json(item);
-  } catch (error) {
-  console.error(error.message); 
-  res.status(500).json(error)}
+  } catch (error) { 
+  res.status(500).send(error)}
 }
 
 Data.getAllItems = async(req, res) => {
@@ -19,19 +18,15 @@ Data.getAllItems = async(req, res) => {
   const items = await DataModel.find({})
   res.status(200).json(items);
   }  catch (error) {
-  console.error(error.message); 
-  res.status(500).json("Bad Get")}
+  res.status(500).send("Bad Get", error)}
 }
 
 Data.getOneItem = async(req, res) => {
   const id = req.param.id;
-  const items = await DataModel.find({_id:id})
-  res.status(200).json(items[0]);
-
-  // await DataModel.findById(id, function (err, hit){
-      // if(err)return console.error(err)
-      // res.status(200).json(hit)
-  // })
+  await DataModel.find({_id:id}, function (err, hit){
+      if(err)return console.error(err)
+      res.status(200).json(hit[0])
+  }).catch(error => {console.error(error)});
 }
 
 Data.deleteOneItem = async(req, res) => {
@@ -44,8 +39,8 @@ Data.deleteOneItem = async(req, res) => {
 }
 
 Data.updateOneItem = async(req, res) => {
-  const id = req.param.id;
-  const data = req.query;
+  const id = req.param._id;
+  const data = req.body;
   await DataModel.findOneAndUpdate({_id:id}, data, { useFindAndModify:false}, function(err,hit){
     if (err) return console.error(err)
     res.status(200).json(hit)
