@@ -46,4 +46,6 @@ Data.updateOneItem = async(req, res) => {
     res.status(200).json(hit)
   }).catch(error => {console.error(error)});
 }
+
+
 module.exports = Data;
