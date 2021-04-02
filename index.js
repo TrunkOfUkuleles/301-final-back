@@ -20,6 +20,11 @@ const mongooseOptions = {
 };
 
 const mongoServer = new MongoMemoryServer();
+// const uri = await mongoServer.getUri();
+// const port = await mongoServer.getPort();
+// const dbPath = await mongoServer.getDbPath();
+// const dbName = await mongoServer.getDbName();
+
 
 mongoServer.getUri()
   .then((connString) => mongoose.connect(connString, mongooseOptions) )

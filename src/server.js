@@ -2,22 +2,26 @@
 
 const express = require('express');
 const app = express();
-
 const Data = require('./data.js');
+const cors = require('cors');
+app.use(cors());
+// const port = Process.env.PORT
 
 app.use(express.urlencoded({extended:true}));
-
+ 
 app.get('/items', Data.getAllItems);
 app.get('/items/:id', Data.getOneItem);
 app.delete('/items/:id', Data.deleteOneItem);
 app.post('/items', Data.addAnItem);
+app.post('/items/:id', Data.updateOneItem)
 
 app.use('*', (req,res) => {
   res.status(404).send('These are not the droids you are looking for.');
 });
 
-app.use( (error,req,res,next) => {
-  res.status(500).send(`My Bad ... ${error.message}`);
+app.use( '*/',(error,req,res) => {
+  if(error) res.status(500).send(`My Bad ... ${error.message}`);
+  
 });
 
 module.exports = {
