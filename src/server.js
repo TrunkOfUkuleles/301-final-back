@@ -8,7 +8,7 @@ const Data = require('./data.js');
 app.use(express.urlencoded({extended:true}));
 
 app.get('/items', Data.getAllItems);
-app.get('/items/:id', getOneItem);
+app.get('/items/:id', Data.getOneItem);
 app.delete('/items/:id', Data.deleteOneItem);
 app.post('/items', Data.addAnItem);
 
