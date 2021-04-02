@@ -36,7 +36,7 @@ Data.getOneItem = async(req, res) => {
 
 Data.deleteOneItem = async(req, res) => {
   const id = req.param.id;
- await DataModel.findOneAndDelete({_id:id} , {new:true, useFindAndModify:true}, function (err, hit) {
+ await DataModel.findOneAndDelete({_id:id} , { useFindAndModify:false}, function (err, hit) {
   if (err) return console.error(err)
      res.status(200).json(hit)
  }).catch(error => {console.error(error)});
