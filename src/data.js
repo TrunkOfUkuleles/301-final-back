@@ -9,8 +9,8 @@ Data.addAnItem = async(req,res,next) => {
     const data = req.body;
     const item = new DataModel(data);
     res.status(200).json(item);
-  } catch (error) { 
-  res.status(500).send(error)}
+  } catch (e) { 
+    next(e.message)}
 }
 
 Data.getAllItems = async(req, res) => {
