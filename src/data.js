@@ -11,7 +11,7 @@ Data.addAnItem = async(req,res,next) => {
     await item.save();
     res.status(200).send(item);
   }catch (error) {
-    next(e.message)
+    res.send(500, error)
    
   }
 }
@@ -36,14 +36,14 @@ Data.deleteOneItem = async(req, res) => {
  await DataModel.deleteOne({_id:id})
  res.send(200, 'deleted')
 
-
 }
 
 Data.updateOneItem = async(req, res) => {
   const id = req.params.id;
+  console.log('id to be updated', id)
   const data = req.body;
   const item = await DataModel.findByIdAndUpdate({_id:id}, data, {new:true, useFindAndModify: false})
-  item.save()
+  // item.save()
   res.status(200).json(item)
 
   }
