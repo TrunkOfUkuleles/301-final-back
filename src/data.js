@@ -11,7 +11,7 @@ Data.addAnItem = async(req,res,next) => {
     await item.save();
     res.status(200).send(item);
   }catch (error) {
-    res.send(500, error)
+    res.status(500).send( error)
    
   }
 }
@@ -34,7 +34,7 @@ Data.getOneItem = async(req, res) => {
 Data.deleteOneItem = async(req, res) => {
  const id = req.params.id;
  await DataModel.deleteOne({_id:id})
- res.send(200, 'deleted')
+ res.status(500).send( 'deleted')
 
 }
 
