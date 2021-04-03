@@ -19,7 +19,7 @@ const mongooseOptions = {
   poolSize: 10,
 };
 
-const mongoServer = new MongoMemoryServer();
+const mongoServer = new MongoMemoryServer({port: 3004});
 // const uri = await mongoServer.getUri();
 // const port = await mongoServer.getPort();
 // const dbPath = await mongoServer.getDbPath();
@@ -29,3 +29,4 @@ const mongoServer = new MongoMemoryServer();
 mongoServer.getUri()
   .then((connString) => mongoose.connect(connString, mongooseOptions) )
   .then( () => server.start(process.env.PORT) );
+console.log(  mongoServer.getInstanceInfo())

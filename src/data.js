@@ -1,51 +1,52 @@
 'use strict';
 
 const DataModel = require('./item-model.js');
-
+// const client = supergoose(app.server);
 const Data = { };
 
 Data.addAnItem = async(req,res,next) => {
   try {
-    const data = req.body;
+    const data = req.body
     const item = new DataModel(data);
-    res.status(200).json(item);
-  } catch (e) { 
-    next(e.message)}
+    await item.save();
+    res.status(200).send(item);
+  }catch (error) {
+    next(e.message)
+   
+  }
 }
 
 Data.getAllItems = async(req, res) => {
-  try {
-  const items = await DataModel.find({})
-  res.status(200).json(items);
-  }  catch (error) {
-  res.status(500).send("Bad Get", error)}
+
+  const items = await DataModel.find({});
+  res.status(200).send(items)
+ 
+
 }
 
 Data.getOneItem = async(req, res) => {
-  const id = req.param.id;
-  await DataModel.find({_id:id}, function (err, hit){
-      if(err)return console.error(err)
-      res.status(200).json(hit[0])
-  }).catch(error => {console.error(error)});
+
+  const id = req.params.id;
+  const target = await DataModel.find({_id: id})
+  res.status(200).send(target[0])
 }
 
 Data.deleteOneItem = async(req, res) => {
-  const id = req.param.id;
- await DataModel.findOneAndDelete({_id:id} , { useFindAndModify:false}, function (err, hit) {
-  if (err) return console.error(err)
-     res.status(200).json(hit)
- }).catch(error => {console.error(error)});
+ const id = req.params.id;
+ await DataModel.deleteOne({_id:id})
+ res.send(200, 'deleted')
+
 
 }
 
 Data.updateOneItem = async(req, res) => {
-  const id = req.param._id;
+  const id = req.params.id;
   const data = req.body;
-  await DataModel.findOneAndUpdate({_id:id}, data, { useFindAndModify:false}, function(err,hit){
-    if (err) return console.error(err)
-    res.status(200).json(hit)
-  }).catch(error => {console.error(error)});
-}
+  const item = await DataModel.findByIdAndUpdate({_id:id}, data, {new:true, useFindAndModify: false})
+  item.save()
+  res.status(200).json(item)
+
+  }
 
 
 module.exports = Data;
