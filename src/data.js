@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 const DataModel = require('./item-model.js');
 // const client = supergoose(app.server);
 const Data = { };
